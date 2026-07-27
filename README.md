@@ -1,178 +1,167 @@
-# Java Data Structures and Algorithms Lab
+# Java Data Structures & Algorithms Lab
 
-A Java portfolio project focused on implementing data structures and algorithms from scratch, testing edge cases, analyzing performance, and practicing professional Git workflows.
+A dependency-free Java laboratory that implements foundational data structures
+and algorithms from scratch. The project emphasizes correctness, generics,
+edge-case handling, asymptotic analysis, automated testing, and a professional
+feature-branch Git workflow.
 
-## Project Goals
+## Highlights
 
-- Strengthen Java and object-oriented programming skills
-- Implement common data structures without relying on Java’s built-in collection implementations
-- Analyze time and space complexity
-- Test normal behavior, boundary conditions, and error handling
-- Practice feature branches, meaningful commits, and code reviews
-- Build practical problem-solving skills through data structures, algorithms, testing, and complexity analysis
+- Generic, array-backed queue and stack with dynamic resizing
+- Generic singly linked list with indexed and iterator operations
+- Separate-chaining hash table with collision handling and rehashing
+- Binary search tree with ordered traversal and complete deletion logic
+- Array-backed min-heap priority queue with comparator support
+- Undirected graph with BFS, DFS, connectivity, and shortest paths
+- Five sorting algorithms and three search implementations
+- Eight executable regression suites with no external test dependency
+- Integrated demonstration program
+- GitHub Actions continuous integration
 
-## Project Structure
-
-```text
-java-dsa-lab/
-├── README.md
-└── src/
-    ├── Main.java
-    └── datastructures/
-        ├── queue/
-        │   ├── ArrayQueue.java
-        │   └── ArrayQueueTest.java
-        └── stack/
-            ├── ArrayStack.java
-            └── ArrayStackTest.java
-```
-
-## Implemented Features
-
-### Generic Array Queue
-
-`ArrayQueue<T>` is a generic first-in, first-out data structure implemented with a dynamically resizing circular array.
-
-#### Supported Operations
-
-- `enqueue(T element)` adds an element to the back.
-- `dequeue()` removes and returns the front element.
-- `peek()` returns the front element without removing it.
-- `size()` returns the number of stored elements.
-- `isEmpty()` reports whether the queue is empty.
-- The backing array automatically expands when it becomes full.
-
-The queue rejects `null` values. Calling `dequeue()` or `peek()` on an empty queue throws `NoSuchElementException`.
-
-#### Queue Complexity
-
-| Operation | Typical Time | Worst-Case Time |
-|---|---:|---:|
-| `enqueue()` | O(1) | O(n) during resizing |
-| `dequeue()` | O(1) | O(1) |
-| `peek()` | O(1) | O(1) |
-| `size()` | O(1) | O(1) |
-| `isEmpty()` | O(1) | O(1) |
-
-Although an individual resize requires O(n) time, resizing does not occur on every insertion. Therefore, `enqueue()` has amortized O(1) time complexity across many operations.
-
-#### Queue Test Coverage
-
-The queue test suite verifies:
-
-- First-in, first-out ordering
-- Non-destructive `peek()`
-- Circular-array wraparound
-- Automatic array resizing
-- Empty-queue exceptions
-- Rejection of `null` values
-
-Expected test output:
+## Project structure
 
 ```text
-All 5 queue tests passed.
+src/
+├── Main.java
+├── AllTests.java
+├── algorithms/
+│   └── sortingsearching/
+│       ├── SortingSearchingAlgorithms.java
+│       └── SortingSearchingAlgorithmsTest.java
+└── datastructures/
+    ├── graph/
+    ├── hashtable/
+    ├── heap/
+    ├── list/
+    ├── queue/
+    ├── stack/
+    └── tree/
 ```
 
-### Generic Array Stack
+Each package contains its implementation and a self-contained test runner.
 
-`ArrayStack<T>` is a generic last-in, first-out data structure backed by a dynamically resizing array.
+## Requirements
 
-#### Supported Operations
+- JDK 17 or newer
+- PowerShell for the convenience script (optional)
 
-- `push(T element)` adds an element to the top.
-- `pop()` removes and returns the top element.
-- `peek()` returns the top element without removing it.
-- `size()` returns the number of stored elements.
-- `isEmpty()` reports whether the stack is empty.
-- `clear()` removes all elements while keeping the stack reusable.
+No build framework or third-party library is required.
 
-The stack rejects `null` values. Calling `pop()` or `peek()` on an empty stack throws `NoSuchElementException`.
+## Build and run
 
-#### Stack Complexity
+### PowerShell
 
-| Operation | Time Complexity |
-|---|---:|
-| `push()` | Amortized O(1) |
-| `pop()` | O(1) |
-| `peek()` | O(1) |
-| `size()` | O(1) |
-| `isEmpty()` | O(1) |
-| `clear()` | O(n) |
-
-The backing array doubles when it becomes full, allowing `push()` to run in amortized constant time.
-
-#### Stack Test Coverage
-
-The stack test suite verifies:
-
-- New-stack state
-- Last-in, first-out ordering
-- Non-destructive `peek()`
-- Automatic array resizing
-- Empty-stack exceptions
-- Invalid-capacity rejection
-- Rejection of `null` values
-- Clearing and reusing the stack
-
-Expected test output:
-
-```text
-All 7 stack tests passed.
-```
-
-## Demonstration
-
-`Main.java` provides practical demonstrations of both data structures:
-
-- The queue processes mission tasks in first-in, first-out order.
-- The stack manages navigation history in last-in, first-out order.
-
-Expected output:
-
-```text
-=== Queue Demonstration ===
-Next task: Validate telemetry
-Completed: Validate telemetry
-Completed: Analyze sensor data
-Completed: Generate mission report
-
-=== Stack Demonstration ===
-Current page: Navigation Analysis
-Returning from: Navigation Analysis
-Previous page: Telemetry Report
-Pages remaining: 2
-```
-
-## Compile and Run
-
-From the project root, compile the source files:
+Run the complete workflow from the repository root:
 
 ```powershell
-javac -d out src\Main.java src\datastructures\queue\ArrayQueue.java src\datastructures\queue\ArrayQueueTest.java src\datastructures\stack\ArrayStack.java src\datastructures\stack\ArrayStackTest.java
+.\run-tests.ps1
 ```
 
-Run the queue tests:
+### Manual PowerShell commands
 
 ```powershell
-java -cp out datastructures.queue.ArrayQueueTest
-```
-
-Run the stack tests:
-
-```powershell
-java -cp out datastructures.stack.ArrayStackTest
-```
-
-Run the combined demonstration:
-
-```powershell
+$sources = Get-ChildItem -Path src -Recurse -Filter *.java |
+    Select-Object -ExpandProperty FullName
+javac -d out $sources
+java -cp out AllTests
 java -cp out Main
 ```
 
-## Current Status
+Successful regression output ends with:
 
-- Generic circular-array queue implemented and tested
-- Generic dynamically resizing array stack implemented and tested
-- Queue and stack demonstrations available through `Main`
-- Operations and complexity documented
-- Additional data structures and algorithms in progress
+```text
+ALL 8 TEST SUITES PASSED
+```
+
+## Implemented operations
+
+| Component | Core operations |
+|---|---|
+| Array queue | enqueue, dequeue, peek, resize, circular wraparound |
+| Array stack | push, pop, peek, clear, resize |
+| Singly linked list | add, get, set, remove, search, iterate |
+| Hash table | put, get, update, remove, rehash, key collection |
+| Binary search tree | put, get, min/max, height, traversal, remove |
+| Min heap | offer, peek, poll, remove, replace, comparator ordering |
+| Undirected graph | vertices, edges, BFS, DFS, shortest path, connectivity |
+| Algorithms | bubble, selection, insertion, merge, quick, linear and binary search |
+
+## Complexity reference
+
+| Operation | Average | Worst case |
+|---|---:|---:|
+| Queue enqueue/dequeue | O(1) amortized | O(n) during resize |
+| Stack push/pop | O(1) amortized | O(n) during resize |
+| Linked-list add/remove first | O(1) | O(1) |
+| Linked-list indexed access | O(n) | O(n) |
+| Hash-table put/get/remove | O(1) | O(n) |
+| BST put/get/remove | O(log n) | O(n) |
+| Heap offer/poll | O(log n) | O(log n) |
+| Graph BFS/DFS | O(V + E) | O(V + E) |
+| Merge sort | O(n log n) | O(n log n) |
+| Quick sort | O(n log n) | O(n²) |
+| Binary search | O(log n) | O(log n) |
+
+The BST is intentionally unbalanced to expose how insertion order can change
+tree height and worst-case performance.
+
+## Design decisions
+
+- **Generics:** Collections accept reusable element, key, and value types.
+- **Fail-fast validation:** Invalid nulls, indexes, and empty removals produce
+  clear exceptions.
+- **Encapsulation:** Internal nodes, buckets, and backing arrays are not
+  exposed to callers.
+- **Deterministic traversal:** Linked insertion order makes graph test results
+  reproducible.
+- **Input immutability:** Sorting functions return sorted copies instead of
+  changing the caller's array.
+- **Dependency-free tests:** Every suite can run with only the JDK, making the
+  implementation and assertions easy to inspect.
+
+## Interview discussion points
+
+1. Explain why queue and stack resizing is O(1) amortized even though one
+   individual resize is O(n).
+2. Compare separate chaining with open addressing for collision resolution.
+3. Describe the three BST deletion cases and how an in-order successor is used.
+4. Explain why a heap provides fast access to the minimum but does not keep
+   every element globally sorted.
+5. Compare BFS and DFS, and explain why BFS finds an unweighted shortest path.
+6. Explain why an unbalanced BST can degrade from O(log n) to O(n).
+7. Compare stable and unstable sorting algorithms and their space tradeoffs.
+
+## Git workflow
+
+The repository was developed through focused feature branches:
+
+```text
+feature/queue
+feature/stack
+feature/singly-linked-list
+feature/hash-table
+feature/binary-search-tree
+feature/heap-priority-queue
+feature/graph-traversal
+feature/sorting-searching
+feature/final-integration
+```
+
+Each milestone was compiled and tested before being committed, pushed, and
+merged into `main`.
+
+## Résumé-ready description
+
+**Java Data Structures & Algorithms Lab** — Implemented eight reusable Java
+data-structure and algorithm modules using generics, dynamic resizing,
+collision resolution, tree and heap invariants, BFS/DFS, shortest-path
+traversal, and sorting/searching algorithms; built comprehensive dependency-free
+regression suites and automated compilation and testing with GitHub Actions.
+
+## Future enhancements
+
+- Add JUnit 5 and Maven or Gradle
+- Benchmark operations with JMH
+- Add balanced AVL or red-black trees
+- Add directed and weighted graph algorithms
+- Build an interactive visualizer as a separate project
